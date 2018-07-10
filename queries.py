@@ -1,7 +1,8 @@
 
 q_rating = """
 SELECT 
-  rating_own
+  db_name
+, rating_own
 , rating_opponent
 , eval as ev
 , (result=1) :: Int as win
@@ -14,6 +15,7 @@ FROM (
   , rating2.rating as rating_opponent
   , eval
   , move_number
+  , database.name as db_name
   FROM game
   JOIN player_rating as rating1 ON 
         game.player_white_id=rating1.player_id
@@ -24,11 +26,11 @@ FROM (
     AND extract(year from game.date)=rating2.year
     AND extract(month from game.date)=rating2.month
   JOIN move_eval on game.id=move_eval.game_id
+  JOIN database on game.database_id=database.id
   WHERE 
             move_number>=10 and move_number<=40
-        AND game.database_id=19
         AND eval is not null
-        
+        AND database.is_public
 ) values
 WHERE is_white
 """
