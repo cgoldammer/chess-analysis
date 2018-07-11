@@ -28,9 +28,9 @@ FROM (
   JOIN move_eval on game.id=move_eval.game_id
   JOIN database on game.database_id=database.id
   WHERE 
-            move_number>=10 and move_number<=40
-        AND eval is not null
-        AND database.is_public
+        move_number>=%(move_number_start)s and move_number<=%(move_number_end)s
+    AND eval is not null
+    AND database.is_public
 ) values
 WHERE is_white
 """
