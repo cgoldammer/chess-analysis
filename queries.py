@@ -1,4 +1,3 @@
-
 q_rating = """
 SELECT 
   db_name
@@ -33,4 +32,24 @@ FROM (
     AND database.is_public
 ) values
 WHERE is_white
+"""
+
+q_games = """SELECT * from game"""
+q_db = """SELECT * from database WHERE is_public OR name='kingbase_random'"""
+q_players = """SELECT * from player"""
+q_tournaments = """SELECT * from tournament"""
+
+q_positions = """
+SELECT
+  g.id as game_id
+, me.move_number, me.is_white
+, me.fen, me.eval as eval_played, me.eval_best
+, g.game_result as result
+, pa.typ, pa.value
+FROM move_eval me
+JOIN game g on me.game_id = g.id
+JOIN position p on me.fen = p.fen
+JOIN position_attribute pa on pa.position_id = p.id
+WHERE eval_best is not null
+LIMIT {limit}
 """
