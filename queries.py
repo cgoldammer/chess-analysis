@@ -29,7 +29,7 @@ FROM (
   WHERE 
         move_number>=%(move_number_start)s and move_number<=%(move_number_end)s
     AND eval is not null
-    AND database.is_public
+    AND database.is_public OR name='kingbase_random'
 ) values
 WHERE is_white
 """
